@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -10,6 +11,23 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 function SignUp() {
+
+  const [isError, setIsError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
+
+  const checkValidation = (e) => {
+    const confirmpassword = e.target.value;
+    setConfirmPassword(confirmpassword);
+    if(password !== confirmpassword){
+      setIsError("Password didn't match.");
+    } 
+    else {
+      setIsError("");
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -60,6 +78,9 @@ function SignUp() {
                   required
                   fullWidth
                   label="Email Address"
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -68,6 +89,8 @@ function SignUp() {
                   fullWidth
                   label="Password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -76,9 +99,15 @@ function SignUp() {
                   fullWidth
                   label="Confirm Password"
                   type="password"
+                  value={confirmpassword}
+                  onChange={(e) => checkValidation(e)}
                 />
               </Grid>
             </Grid>
+
+            <Box>
+              {isError}
+            </Box>
 
             <Button
               type="submit"
